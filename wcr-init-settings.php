@@ -41,12 +41,11 @@ function wcr_add_pages() {
     20  => 'BPS &amp; Grant Schemes',
     40  => 'Fodder &amp; Straw',
     50  => 'Valuations',
-    60  => 'Planning',
+    60  => 'Planning &amp; Development',
     70  => 'Landlord &amp; Tenant',
     80  => 'Tax',
     90  => 'Compensation',
-    100 => 'Development',
-    110 => 'Agency'
+    100 => 'Agency'
   );
   foreach ( $titles as $menu_order => $title ) {
     $parent_pages[$menu_order]['title']   = $title;
