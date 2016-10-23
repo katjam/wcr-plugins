@@ -1,23 +1,23 @@
 <?php
 /*
-Plugin Name: WCR Featured Sale widget
+Plugin Name: WCR Featured widget
 Version 0.0.0
-Description: WCR Featured Sale
+Description: WCR Featured teaser for categories Sale and Property
  */
 
-add_action( 'widgets_init', 'wcr_featured_sale_widget_init' );
+add_action( 'widgets_init', 'wcr_featured_widget_init' );
 
-function wcr_featured_sale_widget_init() {
-    register_widget( 'wcr_featured_sale_widget' );
+function wcr_featured_widget_init() {
+    register_widget( 'wcr_featured_widget' );
 }
 
-class wcr_featured_sale_widget extends WP_Widget {
+class wcr_featured_widget extends WP_Widget {
     function __construct() {
         $widget_ops = array(
             'classname' => 'widget_featured_single_post',
-            'description' => __( 'Display Featured Sale', 'spacious' ) );
+            'description' => __( 'Display Featured Post', 'spacious' ) );
         $control_ops = array( 'width' => 200, 'height' =>250 );
-        parent::__construct( false, $name='Featured Sale POst', $widget_ops, $control_ops);
+        parent::__construct( false, $name='WCR Featured Post', $widget_ops, $control_ops);
     }
 
     function form( $instance ) {
