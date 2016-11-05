@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WCR Featured widget
-Version 0.0.0
+Version: 0.0.0
 Description: WCR Featured teaser for categories Sale and Property
  */
 
@@ -21,22 +21,23 @@ class wcr_featured_widget extends WP_Widget {
     }
 
     function form( $instance ) {
-        $instance = wp_parse_args( (array) $instance, array( 'page_id' => '', 'title' => '', 'disable_feature_image' => 0, 'image_position' => 'above' ) );
+        $instance = wp_parse_args( (array) $instance, array( 'cat_id' => '', 'title' => '', 'disable_feature_image' => 0, 'image_position' => 'above' ) );
         $title = esc_attr( $instance[ 'title' ] );
-        $page_id = absint( $instance[ 'page_id' ] );
+        $cat_id = absint( $instance[ 'cat_id' ] );
         $disable_feature_image = $instance['disable_feature_image'] ? 'checked="checked"' : '';
         $image_position = $instance[ 'image_position' ];
-        _e( 'Suitable for Home Top Sidebar, Home Bottom Left Sidebar and Side Sidbar.', 'spacious' );
+_e( 'Displays the title of the Post if title input is empty.', 'wcr_theme' );
 ?>
         <p>
             <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e( 'Title:', 'spacious' ); ?></label>
             <input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
         </p>
-        <p><?php _e( 'Displays the title of the Page if title input is empty.', 'spacious' ); ?></p>
+        <p><?php _e( 'Choose a category to feature the lastest post.', 'wcr_theme' );
+?></p>
 
         <p>
-            <label for="<?php echo $this->get_field_id( 'page_id' ); ?>"><?php _e( 'Page', 'spacious' ); ?>:</label>
-            <?php wp_dropdown_pages( array( 'name' => $this->get_field_name( 'page_id' ), 'selected' => $instance['page_id'] ) ); ?>
+            <label for="<?php echo $this->get_field_id( 'cat_id' ); ?>"><?php _e( 'Category', 'wcr_theme' ); ?>:</label>
+            <?php wp_dropdown_categories( array('name' => $this->get_field_name( 'cat_id' ),'selected' => $instance[ 'cat_id' ])); ?>
         </p>
         <p>
             <input class="checkbox" type="checkbox" <?php echo $disable_feature_image; ?> id="<?php echo $this->get_field_id('disable_feature_image'); ?>" name="<?php echo $this->get_field_name('disable_feature_image'); ?>" /> <label for="<?php echo $this->get_field_id('disable_feature_image'); ?>"><?php _e( 'Remove Featured image', 'spacious' ); ?></label>
@@ -60,7 +61,7 @@ class wcr_featured_widget extends WP_Widget {
     function update( $new_instance, $old_instance ) {
         $instance = $old_instance;
         $instance[ 'title' ] = strip_tags( $new_instance[ 'title' ] );
-        $instance[ 'page_id' ] = absint( $new_instance[ 'page_id' ] );
+        $instance[ 'cat_id' ] = absint( $new_instance[ 'cat_id' ] );
         $instance[ 'disable_feature_image' ] = isset( $new_instance[ 'disable_feature_image' ] ) ? 1 : 0;
         $instance[ 'image_position' ] = $new_instance[ 'image_position' ];
 
@@ -72,19 +73,19 @@ class wcr_featured_widget extends WP_Widget {
         extract( $instance );
         global $post;
         $title = isset( $instance[ 'title' ] ) ? $instance[ 'title' ] : '';
-        $page_id = isset( $instance[ 'page_id' ] ) ? $instance[ 'page_id' ] : '';
+        $cat_id = isset( $instance[ 'cat_id' ] ) ? $instance[ 'cat_id' ] : '';
         $disable_feature_image = !empty( $instance[ 'disable_feature_image' ] ) ? 'true' : 'false';
         $image_position = isset( $instance[ 'image_position' ] ) ? $instance[ 'image_position' ] : 'above' ;
+        if( $cat_id ) {
 
-        if( $page_id ) {
-            $the_query = new WP_Query( 'page_id='.$page_id );
+            $the_query = new WP_Query( array( 'cat' => $cat_id ) );
             while( $the_query->have_posts() ):$the_query->the_post();
             $page_name = get_the_title();
 
             $output = $before_widget;
             if( $image_position == "below" ) {
-                if( $title ): $output .= $before_title.'<a href="' . get_permalink() . '" title="'.$title.'">'. $title .'</a>'.$after_title;
-                else: $output .= $before_title.'<a href="' . get_permalink() . '" title="'.$page_name.'">'. $page_name .'</a>'.$after_title;
+                if( $title ): $output .= $before_title.$title.$after_title;
+                else: $output .= $before_title.$page_name.$after_title;
 endif;
             }
             if( has_post_thumbnail() && $disable_feature_image != "true" ) {
@@ -97,7 +98,7 @@ endif;
 endif;
             }
             $output .= '<p>'.get_the_excerpt().'</p>';
-            $output .= '<a class="read-more" href="'. get_permalink() .'">'.__( 'Read more', 'spacious' ).'</a>';
+            $output .= '<a class="call-to-action-button" href="'. get_permalink() .'">'.$page_name.'</a>';
             $output .= $after_widget;
 endwhile;
 // Reset Post Data
