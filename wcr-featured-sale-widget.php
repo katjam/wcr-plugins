@@ -78,7 +78,7 @@ _e( 'Displays the title of the Post if title input is empty.', 'wcr_theme' );
         $image_position = isset( $instance[ 'image_position' ] ) ? $instance[ 'image_position' ] : 'above' ;
         if( $cat_id ) {
 
-            $the_query = new WP_Query( array( 'cat' => $cat_id ) );
+            $the_query = new WP_Query( array( 'category__and' => array($cat_id, 5) ) );
             while( $the_query->have_posts() ):$the_query->the_post();
             $page_name = get_the_title();
 
