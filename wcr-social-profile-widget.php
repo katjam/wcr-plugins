@@ -1,27 +1,27 @@
 <?php
 /*
-Plugin Name: WCR contact block
+Plugin Name: WCR social profiles block
 Version: 0.0.0
-Description: WCR contact with phones and email.
- */
+Description: WCR social profile buttons.
+*/
 
-add_action( 'widgets_init', 'wcr_contact_widget_init' );
+add_action( 'widgets_init', 'wcr_social_profile_widget_init' );
 
-function wcr_contact_widget_init() {
-    register_widget( 'wcr_contact_widget' );
+function wcr_social_profile_widget_init() {
+    register_widget( 'wcr_social_profile_widget' );
 }
 
-class wcr_contact_widget extends WP_Widget
+class wcr_social_profile_widget extends WP_Widget
 {
 
     public function __construct()
     {
         $widget_details = array(
-            'classname' => 'wcr_contact_widget',
-            'description' => 'WCR contact widget'
+            'classname' => 'wcr_social_profile_widget',
+            'description' => 'WCR Social Profile widget'
         );
 
-        parent::__construct( 'wcr_contact_widget', 'WCR Contact Widget', $widget_details );
+        parent::__construct( 'wcr_social_profile_widget', 'WCR Social Profile Widget', $widget_details );
 
     }
 
@@ -33,13 +33,11 @@ class wcr_contact_widget extends WP_Widget
         }
 
         $text = '
-     <div>
-       <span class="mailto"><a href="mailto:lizzie@westcountryrural.co.uk" class="mailto"><i class="fa fa-envelope"></i></a> <a href="mailto:lizzie@westcountryrural.co.uk">lizzie@westcountryrural.co.uk</a></span>
-        <div class="numbers">
-           <span><i class="fa fa-phone"></i> 01647 24831</span>
-           <span><i class="fa fa-mobile"></i> 07738 162673</span>
+        <div>
+           <a href="https://twitter.com/wcountryrural" title="Follow West Country Rural on Twitter" target="_blank"><i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i></a>
+           <a href="https://uk.linkedin.com/in/lizzie-burton-9b4860106" title="View Lizzie Burton\'s Linkedin Profile" target="_blank"><i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i></a>
+           <a href="https://www.facebook.com/westcountryrural" title="West Country Rural Facebook page" target="_blank"><i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i></a>
        </div>
-    </div>
         ';
         if( !empty( $instance['text'] ) ) {
             $text = $instance['text'];

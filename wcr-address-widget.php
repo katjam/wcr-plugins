@@ -1,27 +1,27 @@
 <?php
 /*
-Plugin Name: WCR contact block
+Plugin Name: WCR address block
 Version: 0.0.0
-Description: WCR contact with phones and email.
+Description: WCR address.
  */
 
-add_action( 'widgets_init', 'wcr_contact_widget_init' );
+add_action( 'widgets_init', 'wcr_address_widget_init' );
 
-function wcr_contact_widget_init() {
-    register_widget( 'wcr_contact_widget' );
+function wcr_address_widget_init() {
+    register_widget( 'wcr_address_widget' );
 }
 
-class wcr_contact_widget extends WP_Widget
+class wcr_address_widget extends WP_Widget
 {
 
     public function __construct()
     {
         $widget_details = array(
-            'classname' => 'wcr_contact_widget',
-            'description' => 'WCR contact widget'
+            'classname' => 'wcr_address_widget',
+            'description' => 'WCR address widget'
         );
 
-        parent::__construct( 'wcr_contact_widget', 'WCR Contact Widget', $widget_details );
+        parent::__construct( 'wcr_address_widget', 'WCR address Widget', $widget_details );
 
     }
 
@@ -33,13 +33,11 @@ class wcr_contact_widget extends WP_Widget
         }
 
         $text = '
-     <div>
-       <span class="mailto"><a href="mailto:lizzie@westcountryrural.co.uk" class="mailto"><i class="fa fa-envelope"></i></a> <a href="mailto:lizzie@westcountryrural.co.uk">lizzie@westcountryrural.co.uk</a></span>
-        <div class="numbers">
-           <span><i class="fa fa-phone"></i> 01647 24831</span>
-           <span><i class="fa fa-mobile"></i> 07738 162673</span>
-       </div>
-    </div>
+        <div class="address">
+           Coombe Farm Cottage<br>
+           Cheriton Bishop<br>
+           Exeter EX6 6JL<br>
+        </div>
         ';
         if( !empty( $instance['text'] ) ) {
             $text = $instance['text'];
