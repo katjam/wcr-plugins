@@ -77,30 +77,28 @@ _e( 'Displays the title of the Post if title input is empty.', 'wcr_theme' );
         $disable_feature_image = !empty( $instance[ 'disable_feature_image' ] ) ? 'true' : 'false';
         $image_position = isset( $instance[ 'image_position' ] ) ? $instance[ 'image_position' ] : 'above' ;
         if( $cat_id ) {
-
+            $output = $before_widget;
+            $not_first = 'first';
             $the_query = new WP_Query( array( 'category__and' => array($cat_id, 5) ) );
             while( $the_query->have_posts() ):$the_query->the_post();
-            $page_name = get_the_title();
-
-            $output = $before_widget;
-            if( $image_position == "below" ) {
-                if( $title ): $output .= $before_title.$title.$after_title;
-                else: $output .= $before_title.$page_name.$after_title;
-endif;
-            }
-            if( has_post_thumbnail() && $disable_feature_image != "true" ) {
+              $page_name = get_the_title();
+              $display_title = $title ? $title : $page_name;
+              if( $image_position == "below" ) {
+                $output .= '<div class="post-excerpt post-excerpt-'.$not_first.' clearfix">'.$before_title.$display_title.$after_title;
+              }
+              if( has_post_thumbnail() && $disable_feature_image != "true" ) {
                 $output.= '<div class="service-image">'.get_the_post_thumbnail( $post->ID, 'featured', array( 'title' => esc_attr( $page_name ), 'alt' => esc_attr( $page_name ) ) ).'</div>';
-            }
+              }
 
-            if( $image_position == "above" ) {
-                if( $title ): $output .= $before_title.'<a href="' . get_permalink() . '" title="'.$title.'">'. $title .'</a>'.$after_title;
-                else: $output .= $before_title.'<a href="' . get_permalink() . '" title="'.$page_name.'">'. $page_name .'</a>'.$after_title;
-endif;
-            }
-            $output .= '<p>'.get_the_excerpt().'</p>';
-            $output .= '<a class="call-to-action-button" href="'. get_permalink() .'">'.$page_name.'</a>';
+              if( $image_position == "above" ) {
+                $output .= $before_title.$display_title.$after_title;
+              }
+              $output .= '<p>'.get_the_excerpt().'</p>';
+              $output .= '<a class="call-to-action-button" href="'. get_permalink() .'">'.$page_name.'</a></div>';
+              $not_first = 'multiple';
+            endwhile;
             $output .= $after_widget;
-endwhile;
+
 // Reset Post Data
 wp_reset_postdata();
 echo $output;
